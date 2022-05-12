@@ -1,5 +1,42 @@
 "use strict";
 
+function toggle_like(rows_id, type) {
+    console.log(rows_id, type)
+    let $a_like = $(`#${rows_id} a[aria-label='heart']`)
+    let $i_like = $a_like.find("i")
+    if ($i_like.hasClass("fa-heart")) {
+        $.ajax({
+            type: "POST",
+            url: "/update_like",
+            data: {
+                post_id_give: post_id,
+                type_give: type,
+                action_give: "unlike"
+            },
+            success: function (response) {
+                console.log("unlike")
+                $i_like.addClass("fa-heart-o").removeClass("fa-heart")
+                $a_like.find("span.like-num").text(num2str(response["count"]))
+            }
+        })
+    } else {
+        $.ajax({
+            type: "POST",
+            url: "/update_like",
+            data: {
+                post_id_give: post_id,
+                type_give: type,
+                action_give: "like"
+            },
+            success: function (response) {
+                console.log("like")
+                $i_like.addClass("fa-heart").removeClass("fa-heart-o")
+                $a_like.find("span.like-num").text(num2str(response["count"]))
+            }
+        })
+
+    }
+}
 
 function All() {
     listing()
@@ -53,6 +90,19 @@ $(document).ready(function () {
     checkStatus();
 }, {once: true});
 
+function num2str(count) {
+    if (count > 10000) {
+        return parseInt(count / 1000) + "k"
+    }
+    if (count > 500) {
+        return parseInt(count / 100) / 10 + "k"
+    }
+    if (count == 0) {
+        return ""
+    }
+    return count
+}
+
 function getctype(str) {
     $('#card-box').empty()
     $.ajax({
@@ -68,7 +118,6 @@ function getctype(str) {
                 let url = rows[i]['url']
                 let star = rows[i]['star']
                 let comment = rows[i]['comment']
-
 
                 let star_image = '⭐'.repeat(star)
 
@@ -96,9 +145,48 @@ function getctype(str) {
 
 }
 
+function get_posts() {
+    // $("#card-box").empty()
+    $.ajax({
+        type: "GET",
+        url: "/get_posts",
+        data: {},
+        success: function (response) {
+            if (response["result"] == "success") {
+                let posts = response["posts"]
+                for (let i = 0; i < posts.length; i++) {
+                    let post = posts[i]
+
+                    let class_heart = post['heart_by_me'] ? "fa-heart": "fa-heart-o"
+                    let count_heart = post['count_heart']
+
+                    let html_temp = `<div class="box" id="${post["_id"]}">
+                                        <article class="media">                                 
+                                            <div class="media-content">
+                                                <nav class="level is-mobile">
+                                                    <div class="level-left">
+                                                        <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('${post['_id']}', 'heart')">
+                                                            <span class="icon is-small"><i class="fa ${class_heart}"
+                                                                                           aria-hidden="true"></i></span>&nbsp;<span class="like-num">${num2str(count_heart)}</span>
+                                                        </a>
+                                                    </div>
+                                                </nav>
+                                            </div>
+                                        </article>
+                                    </div>`
+                    $("#post-box").append(html_temp)
+                }
+            }
+        }
+    })
+}
+
+$(document).ready(function () {
+    get_posts()
+})
 
 function open_box() {
-     if ($.cookie('mytoken')) {
+    if ($.cookie('mytoken')) {
         /* NULL CHECK */
         if (url == '') {
             alert("URL IS NULL");
@@ -148,6 +236,9 @@ function listing() {
                 let star = rows[i]['star']
                 let comment = rows[i]['comment']
 
+                let class_heart = rows['heart_by_me'] ? "fa-heart": "fa-heart-o"
+                let count_heart = rows['count_heart']
+
                 let star_image = '⭐'.repeat(star);
 
                 let temp_html = `<div class="col card-box">
@@ -158,11 +249,20 @@ function listing() {
                                          <p>${star_image}</p>
                                          <p class="mycomment">${comment}</p>
                                      </div>
+                                     <nav class="level is-mobile">
+                                                    <div class="level-left">
+                                                        <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('${rows['_id']}', 'heart')">
+                                                            <span class="icon is-small"><i class="fa ${class_heart}"
+                                                                                           aria-hidden="true"></i></span>&nbsp;<span class="like-num">${num2str(count_heart)}</span>
+                                                        </a>
+                                                    </div>
+                                    </nav>
                                  </div>
                                  <div class="option">
                                      <a href="#" onclick="updateCard(${num});"><span class="las la-edit"></span></a>
                                      <a href="#" onclick="dropList(${num});"><span class="las la-trash"></span></a>
                                  </div>
+                   
                             </div>`;
 
                 $('#card-box').append(temp_html);
