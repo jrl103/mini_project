@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:title" content="문화탐방">
+    <meta property="og:description" content="재밌는건 나누자고! 문탐에 남겨줘 너의 원픽 문화생활!">
+    <meta property="og:image" content="../static/logo.png">
+
+
+    <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon/android-icon-192x192.png">
+
+    <link rel="manifest" href="/static/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- icons8 -->
+    <link rel="stylesheet"
+          href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <!-- font-awesome icon -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hi+Melody&family=Jua&display=swap');
+    </style>
+    <title>문탐-문화탐방</title>
+    <link rel="stylesheet" href="../static/css/index.css">
+    <script src="../static/js/index.js"></script>
+</head>
+<body>
+<div class="section1" id="top">
+    <div class="d-grid gap-2 d-md-block menu_box">
+        <button id="loginBtn" class="button is-sparta" type="button" onclick="login()">로그인</button>
+        <button id="signUpBtn" class="button is-sparta is-outlined" type="button" onclick="sign_up()">회원가입</button>
+    </div>
+    <a href="#">
+        <div class="image_box"></div>
+    </a>
+    <button type="button" class="writeBtn btn-outline-dark" onclick="open_box()"><i class="icon fa fa-pencil-square-o"
+                                                                                    aria-hidden="true"></i>기록하기
+    </button>
+</div>
+
+<div class="category">
+    <ul>
+        <li><a href="javascript:All()">All</a></li>
+        <li><a href="javascript:theater()">Theater</a></li>
+        <li><a href="javascript:movies()">Movies</a></li>
+        <li><a href="javascript:consert()">Consert</a></li>
+    </ul>
+</div>
+<div class="section2" id="post-box">
+    <div class="form-floating mb-2">
+        <input type="email" class="input is-rounded" id="url" placeholder="사진 url">
+        <label for="url"></label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="email" class="input is-rounded" id="title" placeholder="제목">
+        <label for="url"></label>
+    </div>
+    <div class="input-group mb-3">
+        <label class="input-group-text" for="star" style="background-color:#ffc030">별점</label>
+        <select class="form-select" id="star">
+            <option selected>--선택하기--</option>
+            <option value="1">⭐</option>
+            <option value="2">⭐⭐</option>
+            <option value="3">⭐⭐⭐</option>
+            <option value="4">⭐⭐⭐⭐</option>
+            <option value="5">⭐⭐⭐⭐⭐</option>
+        </select>
+    </div>
+    <div class="input-group mb-3">
+        <label class="input-group-text" for="ctype" style="background-color:#8ec7ff">구분</label>
+        <select class="form-select" id="ctype">
+            <option selected>--선택하기--</option>
+            <option name="theater">theater</option>
+            <option name="movies">movies</option>
+            <option name="consert">consert</option>
+        </select>
+    </div>
+    <div class="form-floating">
+        <textarea class="textarea is-hovered" placeholder="comment" id="comment"
+                  style="height: 100px"></textarea>
+        <label for="comment"></label>
+    </div>
+    <div class="mybtns">
+        <button onclick="posting()" type="button" class="button is-danger">기록하기</button>
+        <button onclick="close_box()" type="button" class="button is-grouped">닫기</button>
+    </div>
+</div>
+<div class="wrap">
+    <div class="row row-cols-1 row-cols-md-4 g-4" id="card-box">
+
+    </div>
+</div>
+</body>
+
+</html>
